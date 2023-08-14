@@ -17,16 +17,17 @@ ebookstore
 	1. Search books
 	1. Exit
 
-# Table of Contents 
-
 # Installation section
 *tell other users how to install your project locally*
+
 Download Python IDLE to run the program
 
 # Usage section
 *instructs others on how to use your project after they’ve installed it.*
 *Include screenshots of your project in action*
+
 Run the program (F5) and select an option from the menu
+
 ![Screenshot of my app](screenshot1.png)
 ![Screenshot](image_url =250x)
 ![Screenshot2 of my app](screenshot2.png)
@@ -34,4 +35,5 @@ Run the program (F5) and select an option from the menu
 
 # Credits
 *highlights and links to the authors of your project if the project has been created by more than one person*
+
 @KC-software-en
