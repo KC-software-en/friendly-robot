@@ -37,3 +37,8 @@ Run the program (F5) and select an option from the menu
 *highlights and links to the authors of your project if the project has been created by more than one person*
 
 @KC-software-en
+
+# Add a URL to your GitHub repository
+
+https://kc-software-en.github.io/friendly-robot/
+
