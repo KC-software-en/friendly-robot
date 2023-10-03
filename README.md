@@ -94,13 +94,16 @@ Run the program (F5) and select an option from the menu
 
 *Include screenshots of your project in action*
 
-![Screenshot of my app](screenshots/screenshot1.png)
+![Screenshot1 of my app](screenshots/screenshot1.png)
 ![Screenshot](image_url =250x)
+
 ![Screenshot2 of my app](screenshots/screenshot2.png)
 ![Screenshot](image_url =250x)
-![Screenshot2 of my app](screenshots/screenshot3.png)
+
+![Screenshot3 of my app](screenshots/Screenshot3.png)
 ![Screenshot](image_url =250x)
-![Screenshot2 of my app](screenshots/screenshot4.png)
+
+![Screenshot4 of my app](screenshots/Screenshot4.png)
 ![Screenshot](image_url =250x)
 
 # Credits
