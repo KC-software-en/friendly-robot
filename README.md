@@ -69,6 +69,7 @@ This project is a significant milestone in the learning process and aims to appl
 
 + Install Docker desktop @ https://www.docker.com/products/docker-desktop
 + Open Docker Desktop
++ login to Docker Hub @ https://hub.docker.com/
 
 ## Use the Command Prompt
 1. Check that Docker desktop was successfully installed: `docker run hello-world`
@@ -77,33 +78,29 @@ This project is a significant milestone in the learning process and aims to appl
 1. Deactivate the Virtual Environment: `deactivate`
 
 ## Use Docker Playground
-1. Create a repository
 1. Follow: https://labs.play-with-docker.com/
 1. Start a new instance
 
 In the terminal: 
-1. Copy command from Dockerhub @ https://hub.docker.com/repository/docker/kcse1/bookshelf-capstone/general: `docker pull kcse1/bookshelf-capstone:latest`
-1. Run the docker image: `docker run kcse1/bookshelf-capstone:latest`
+1. Copy command from Docker Hub @ https://hub.docker.com/repository/docker/kcse1/bookshelf/tags?page=1&ordering=last_updated: `docker pull kcse1/bookshelf:BookShelf`
+1. Run the docker image: `docker run -it kcse1/bookshelf:BookShelf`
 1. Select an option from the bookshelf menu
 1. Close session on Docker Playground
 
 ## Use Python IDLE
 Run the program (F5) and select an option from the menu
 
-1. Deactivate virtual environment when you are done working: `deactivate`
+1. Deactivate virtual environment in cmd when you are done working: `deactivate`
 
 *Include screenshots of your project in action*
 
-![Screenshot1 of my app](screenshots/screenshot1.png)
+![Screenshot of my app](screenshots/screenshot1.png)
 ![Screenshot](image_url =250x)
-
 ![Screenshot2 of my app](screenshots/screenshot2.png)
 ![Screenshot](image_url =250x)
-
-![Screenshot3 of my app](screenshots/Screenshot3.png)
+![Screenshot2 of my app](screenshots/screenshot3.png)
 ![Screenshot](image_url =250x)
-
-![Screenshot4 of my app](screenshots/Screenshot4.png)
+![Screenshot2 of my app](screenshots/screenshot4.png)
 ![Screenshot](image_url =250x)
 
 # Credits
