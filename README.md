@@ -73,7 +73,7 @@ This project is a significant milestone in the learning process and aims to appl
 
 ## Use the Command Prompt
 1. Check that Docker desktop was successfully installed: `docker run hello-world`
-1. Build the docker image: `docker build -t bookshelf .` 
+1. Build the docker image: `docker build -t bookshelf ./` 
 1. Run the docker image: `docker run -it bookshelf`
 1. Deactivate the Virtual Environment: `deactivate`
 
