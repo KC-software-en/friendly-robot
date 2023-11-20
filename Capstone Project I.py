@@ -2,7 +2,6 @@
 # import modules
 import sqlite3
 import pandas as pan
-import sys
 
 #####################################################################################################
 
@@ -14,6 +13,11 @@ class NoIdException(Exception):
 # define an exception for when a new book id does not meet the requirements
 class InvalidIdException(Exception):
     "Raised when the id is not 4 characters in length"
+    pass
+
+# define an exception for empty input
+class EmptyInput(Exception):
+    "Raised if the user inputs an empty string"
     pass
 
 # The program should allow the clerk to perform various tasks:        
@@ -29,12 +33,15 @@ def enter_book():
     new_author = input("Enter the book's author :\t")
     new_qty = int(input("Enter the quantity of books:\t"))
 
-    cursor.execute('''INSERT OR REPLACE INTO books(id, Title, Author, Qty) VALUES(?,?,?,?)''', (new_id,new_title,new_author,new_qty))                     
+    cursor.execute('''INSERT OR REPLACE INTO books(id, Title, Author, Qty) VALUES(?,?,?,?)''', (new_id,new_title,new_author,new_qty))
     print('The new book was entered.')
 
     db.commit()          
 
-    # use pandas to print table (pip install pandas in cmd after cd to pip file path)   
+    # use pandas to print table (pip install pandas in cmd after cd to pip file path)
+    # use the pandas read_sql method to execute SQL queries & retrieve results as a DataFrame
+    # pass the SQL query and database connection as arguments
+    # print all rows & columns from the books table in the database
     print(pan.read_sql('SELECT * FROM books', db))
     print()
 
@@ -59,55 +66,92 @@ def update_book(which_bk):
             print()
             break
 
-        elif which_field == 1:            
-            try:
-                update_id = int(input('Enter the new id for the book:\t'))
-                # cast back to str to use len()
-                if len(str(update_id)) != 4:
-                    raise InvalidIdException
-                else:
-                    print(f'The new id {update_id} was received')
-                cursor.execute('''UPDATE books SET id = ? WHERE id = ?''', (update_id, which_bk))                                              
-                db.commit()
-                cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (update_id,))
-                book_record = cursor.fetchone()
-                print(f'The book id was updated.\n{book_record}')
-                print()
-                    
-            except InvalidIdException:
-                print('The id requires 4 integers. Please try again.')
-                print()
+        elif which_field == 1:
+            # use a boolean loop to ensure valid id input
+            while True:
+                try:
+                    update_id = int(input('Enter the new id for the book:\t'))
+                    # cast back to str to use len()
+                    if len(str(update_id)) != 4:
+                        raise InvalidIdException
+                    else:
+                        print(f'The new id {update_id} was received')
+                    cursor.execute('''UPDATE books SET id = ? WHERE id = ?''', (update_id, which_bk))                                              
+                    db.commit()
+                    cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (update_id,))
+                    book_record = cursor.fetchone()
+                    print(f'The book id was updated.\n{book_record}')
+                    print()
+                    break
+                        
+                # defend against invalid length for id
+                except InvalidIdException:
+                    print('The id requires 4 integers. Please try again.')
+                    print()
 
-            finally:
-                db.close()
-
+                # defend against other data types for id
+                except ValueError:
+                    print('Ensure the id is an integer. Please try again.')
+                    print()            
 
         elif which_field == 2:
-            update_title = input('Enter the new title for the book:\t')
-            cursor.execute('''UPDATE books SET Title = ? WHERE id = ?''', (update_title, which_bk))
-            db.commit()
-            cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (which_bk,))
-            book_record = cursor.fetchone()
-            print(f'The book title was updated.\n{book_record}')
-            print()
+            while True:
+                try:
+                    update_title = input('Enter the new title for the book:\t')
+                    # defend against empty input
+                    if len(update_title) == 0:
+                        raise EmptyInput
+                    cursor.execute('''UPDATE books SET Title = ? WHERE id = ?''', (update_title, which_bk))
+                    db.commit()
+                    cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (which_bk,))
+                    book_record = cursor.fetchone()
+                    print(f'The book title was updated.\n{book_record}')
+                    print()
+                    break
+                    
+                # defend against empty input
+                except EmptyInput:
+                    print('There is no input. Please enter a title.')
+                    print()            
 
         elif which_field == 3:
-            update_author = input('Enter the new author for the book:\t')
-            cursor.execute('''UPDATE books SET Author = ? WHERE id = ?''', (update_author, which_bk))
-            db.commit()
-            cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (which_bk,))
-            book_record = cursor.fetchone()
-            print(f"The book's author was updated.\n{book_record}")
-            print()
+            while True:
+                try:
+                    update_author = input('Enter the new author for the book:\t')
+                    # defend against empty input
+                    if len(update_author) == 0:
+                        raise EmptyInput
+                    cursor.execute('''UPDATE books SET Author = ? WHERE id = ?''', (update_author, which_bk))
+                    db.commit()
+                    cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (which_bk,))
+                    book_record = cursor.fetchone()
+                    print(f"The book's author was updated.\n{book_record}")
+                    print()
+                    break
+
+                # defend against empty input
+                except EmptyInput:
+                    print('There is no input. Please enter an author.')
+                    print()
 
         elif which_field == 4:
-            update_qty = int(input('Enter the new quantity for the book:\t'))
-            cursor.execute('''UPDATE books SET Qty = ? WHERE id = ?''', (update_qty, which_bk))
-            db.commit()
-            cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (which_bk,))
-            book_record = cursor.fetchone()
-            print(f"The book's quantity was updated.\n{book_record}")
-            print()
+            while True:
+                try:
+                    update_qty = int(input('Enter the new quantity for the book:\t'))
+                    #if update_qty:
+                     #   raise ValueError
+                    cursor.execute('''UPDATE books SET Qty = ? WHERE id = ?''', (update_qty, which_bk))
+                    db.commit()
+                    cursor.execute('''SELECT id, Title, Author, Qty FROM books WHERE id = ?''', (which_bk,))
+                    book_record = cursor.fetchone()
+                    print(f"The book's quantity was updated.\n{book_record}")
+                    print()
+                    break
+
+                # defend against other data types for qty or empty input
+                except ValueError:
+                    print('Ensure the quantity is an integer. Please try again.')
+                    print()
 
         else:
             print('Invalid selection. Please Try again.\n')
@@ -132,19 +176,33 @@ def delete_book(which_bk):
 def search_books():
     while True:
         try:
-            which_bk = int(input('\nEnter the id of the book:\t'))
+            which_bk = input('\nEnter the id of the book:\t')
+            if len(which_bk) == 0:
+                raise EmptyInput
             # do a check to see if valid id
-            cursor.execute('''SELECT id, Title FROM books WHERE id = ?''', (which_bk,))
+            cast_which_bk = int(which_bk)
+            cursor.execute('''SELECT id, Title FROM books WHERE id = ?''', (cast_which_bk,))
             check_id = cursor.fetchone()
             if check_id is None:
-                raise NoIdException
+                raise NoIdException            
             else:
                 print(f"The book was located.\n{check_id}")
                 print()
-                break
+            break
 
+        # defend against empty input
+        except EmptyInput:
+            print('There is no input. Please enter an author.')
+            print()
+
+        # defend against invalid id input
         except NoIdException:
             print('There is no book with that id. Please try again.')
+            print()
+
+        # defend against other data types for id
+        except ValueError:
+            print('Please enter an integer for the id.')
             print()
 
     return which_bk           
@@ -178,36 +236,12 @@ db.commit()
 # 3003 The Lion, the Witch and the Wardrobe C. S. Lewis 25
 # 3004 The Lord of the Rings J.R.R Tolkien 37
 # 3005 Alice in Wonderland Lewis Carroll 12
-# assign variables for each entry
-id1 = 3001
-title1 = 'A Tale of Two Cities'
-author1 = 'Charles Dickens'
-qty1 = 30
-
-id2 = 3002
-title2 = "Harry Potter and the Philosopher's Stone"
-author2 = 'J.K. Rowling'
-qty2 = 40
-
-id3 = 3003
-title3 = 'The Lion, the Witch and the Wardrobe'
-author3 = 'C. S. Lewis'
-qty3 = 25
-
-id4 = 3004
-title4 = 'The Lord of the Rings'
-author4 = 'J.R.R Tolkien'
-qty4 = 37
-
-id5 = 3005
-title5 = 'Alice in Wonderland'
-author5 = 'Lewis Carroll'
-qty5 = 12
-
 # create a list of the records to insert later
-library = [(id1,title1,author1,qty1), (id2,title2,author2,qty2),
-           (id3,title3,author3,qty3), (id4,title4,author4,qty4),
-           (id5,title5,author5,qty5)]
+library = [(3001,'A Tale of Two Cities','Charles Dickens',30),
+           (3002,"Harry Potter and the Philosopher's Stone",'J.K. Rowling',40),
+           (3003,'The Lion, the Witch and the Wardrobe','C. S. Lewis',25),
+           (3004,'The Lord of the Rings','J.R.R Tolkien',37),
+           (3005,'Alice in Wonderland','Lewis Carroll',12)]
 
 # use INSERT OR REPLACE to avoid sqlite3.IntegrityError: UNIQUE constraint failed: books.id
 cursor.executemany('''INSERT OR REPLACE INTO books(id, Title, Author, Qty) VALUES(?,?,?,?)''', library)
@@ -219,7 +253,10 @@ db.commit()
 # print out a welcome statement
 print('Welcome to the bookshelf editor. Here is the current bookshelf:\n')
 
-# use pandas to print table (pip install pandas in cmd after cd to pip file path)   
+# use pandas to print table (pip install pandas in cmd after cd to pip file path)
+# use the pandas read_sql method to execute SQL queries & retrieve results as a DataFrame
+# pass the SQL query and database connection as arguments
+# print all rows & columns from the books table in the database
 print(pan.read_sql('SELECT * FROM books', db))
 print()
 
@@ -237,10 +274,8 @@ while True:
 '''))
 
     if menu == 0:
-        print('Goodbye!')
-        # use sys.exit() to prevent another loop if quitting & exit the program
-        import sys
-        sys.exit()
+        print('Goodbye!')        
+        break
 
     elif menu == 1:
         enter_book()
